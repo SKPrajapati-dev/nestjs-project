@@ -1,0 +1,12 @@
+version: '3.6'
+services:
+  mysql:
+    environment:
+      - MYSQL_DATABASE=twitter
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    image: mysql:latest
+    ports:
+      - "3306:3306"
