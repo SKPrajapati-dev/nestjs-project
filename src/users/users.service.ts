@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { AddUserDto } from './dto/add-user.dto';
 import { User } from './users.entity';
@@ -12,6 +12,10 @@ export class UsersService {
 
     private async hashpassword(password: string): Promise<string> {
         return await hash(password, 10);
+    }
+
+    async compareHash(password: string, hashedPassword: string): Promise<boolean> {
+        return await compare(password, hashedPassword);
     }
 
     async getAllUsers(): Promise<User[]> {
