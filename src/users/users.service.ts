@@ -30,6 +30,10 @@ export class UsersService {
         return await this.userRepo.findOne({ where: { username }})
     }
 
+    async getUserByProvider(provider: string, providerId: string): Promise<User> {
+        return await this.userRepo.findOne({ where: { provider, providerId }});
+    }
+
     async addUser(newUser: AddUserDto): Promise<User> {
         // username already exists check
         const username = await this.getUserByUsername(newUser.username)
@@ -39,5 +43,9 @@ export class UsersService {
         const hashedPassword = await this.hashpassword(newUser.password);
         newUser.password = hashedPassword;
         return await this.userRepo.save(newUser)
+    }
+
+    async addUserWithoutPassword(newUser: any): Promise<User> {
+        return await this.userRepo.save(newUser);
     }
 }

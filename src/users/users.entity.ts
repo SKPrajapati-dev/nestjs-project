@@ -12,8 +12,14 @@ export class User extends TwtrBaseEntity{
     @Column({ nullable: true, length: 240 })
     bio?: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     password?: string;
+
+    @Column({ nullable: true })
+    provider?: string;
+
+    @Column()
+    providerId?: string;
 
     static removePassword(userObj: User) {
         return Object.fromEntries(

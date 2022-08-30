@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Logger, NotFoundException, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Logger, NotFoundException, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
+import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
 import { AddUserDto } from './dto/add-user.dto';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
@@ -12,13 +13,16 @@ export class UsersController {
         return await this.userService.getAllUsers();
     }
 
-    @Get('/userid/:userid')
-    async getUserByUserId(@Param('userid') userId: string): Promise<any> {
-        const user = await this.userService.getUserByUserId(userId);
+    // Protected
+    @UseGuards(AuthenticatedGuard)
+    @Get('/userid')
+    async getUserByUserId(@Request() req): Promise<any> {
+        const user = await this.userService.getUserByUserId(req.user.id);
         if(!user){
             throw new NotFoundException('User does not exist');
         }
-        return user;
+        const { password, ...result  } = user;
+        return result;
     }
 
     @Get('username')
