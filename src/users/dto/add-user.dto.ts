@@ -1,6 +1,16 @@
+import { IsOptional, IsString } from "class-validator";
+
 export class AddUserDto {
-    readonly username: string;
-    readonly name: string;
+    @IsString()
+    username: string;
+
+    @IsString()
+    name: string;
+
+    @IsString()
     password: string;
-    readonly bio?: string;
+
+    @IsString()
+    @IsOptional()
+    bio?: string;
 }

@@ -6,22 +6,25 @@ import { AppService } from './app.service';
 import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { TweetsModule } from './tweets/tweets.module';
+import { Tweet } from './tweets/tweets.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User],
+      entities: [User, Tweet],
       synchronize: true
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    TweetsModule
   ],
   controllers: [AppController],
   providers: [AppService],

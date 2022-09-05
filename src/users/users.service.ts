@@ -22,7 +22,7 @@ export class UsersService {
         return await this.userRepo.find({});
     }
 
-    async getUserByUserId(userId: string): Promise<User> {
+    async getUserByUserId(userId: number): Promise<User> {
         return await this.userRepo.findOne({ where: { id: userId }})
     }
 

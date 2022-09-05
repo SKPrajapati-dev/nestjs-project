@@ -1,7 +1,8 @@
 import { TwtrBaseEntity } from "src/common/base.entity";
-import { BeforeInsert, Column, Entity } from "typeorm";
+import { Tweet } from "src/tweets/tweets.entity";
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
 
-@Entity()
+@Entity({ name: 'users'})
 export class User extends TwtrBaseEntity{
     @Column({ length: 30, nullable: false, unique: true })
     username: string;
@@ -18,8 +19,12 @@ export class User extends TwtrBaseEntity{
     @Column({ nullable: true })
     provider?: string;
 
-    @Column()
+    @Column({ name: 'provider_id', nullable: true })
     providerId?: string;
+
+
+    @OneToMany(() => Tweet, tweet => tweet.author)
+    tweets: Tweet[];
 
     static removePassword(userObj: User) {
         return Object.fromEntries(

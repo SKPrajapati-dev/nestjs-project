@@ -1,12 +1,14 @@
-version: '3.6'
+version: '3.8'
 services:
-  mysql:
+  postgres:
+    image: postgres:14.5-alpine
+    container_name: database
+    restart: always
     environment:
-      - MYSQL_DATABASE=twitter
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_PASSWORD=password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: nestjs_twitter
     volumes:
-      - ./init:/docker-entrypoint-initdb.d
-    image: mysql:latest
+      - ./db:/var/lib/postgresql/data
     ports:
-      - "3306:3306"
+      - "5432:5432"
