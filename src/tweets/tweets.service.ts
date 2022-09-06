@@ -40,6 +40,18 @@ export class TweetsService {
             .getMany();
     }
 
+    async getTweetById(tweetId: number): Promise<Tweet> {
+        return await this.tweetRepository.createQueryBuilder('tweet')
+            .leftJoinAndSelect('tweet.author', 'author')
+            .where(`tweet.id = :tweetId`, { tweetId })
+            .getOne();
+    }
+
+    async updateTweetLike(tweet: Tweet, count: number) {
+        tweet.likeCount = count;
+        return await this.tweetRepository.save(tweet);
+    }
+
     async addTweet(tweet: AddTweetDto, author: User, origTweetId: number, replyToId: number): Promise<Tweet> {
         if(origTweetId && replyToId){
             throw new BadRequestException('Tweet can be either Reply or Retweet');
@@ -58,6 +70,8 @@ export class TweetsService {
             if(!origTweet){
                 throw new NotFoundException('Original Tweet not found')
             }
+            origTweet.retweetCount += 1;
+            await this.tweetRepository.save(origTweet)
             newTweet.origTweet = origTweet;
         }
 
@@ -71,5 +85,9 @@ export class TweetsService {
 
         const savedTweet = await this.tweetRepository.save(newTweet);
         return savedTweet;
+    }
+
+    async deleteTweet(tweet: Tweet) {
+        return await this.tweetRepository.remove(tweet);
     }
 }

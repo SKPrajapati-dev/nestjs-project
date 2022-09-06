@@ -7,7 +7,7 @@ export class Tweet extends TwtrBaseEntity{
     @Column({ length: 250, nullable: true })
     tweet: string;
 
-    @ManyToOne(() => User, user => user.tweets)
+    @ManyToOne(() => User, user => user.tweets, { onDelete: 'CASCADE'})
     @JoinColumn({ name: 'author_id'})
     author: User;
 
@@ -23,11 +23,11 @@ export class Tweet extends TwtrBaseEntity{
     @Column('text', { array: true, nullable: true  })
     hashtags: string[];
 
-    @OneToOne(() => Tweet)
+    @OneToOne(() => Tweet, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'orig_tweet_id' })
     origTweet: Tweet;
 
-    @OneToOne(() => Tweet)
+    @OneToOne(() => Tweet, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'reply_to_id' })
     replyTo: Tweet;
 }

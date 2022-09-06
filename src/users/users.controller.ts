@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, NotFoundException, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, NotFoundException, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
 import { AddUserDto } from './dto/add-user.dto';
 import { User } from './users.entity';
@@ -38,5 +38,11 @@ export class UsersController {
     @Post('/')
     async addUser(@Body() newUser: AddUserDto): Promise<User> {
         return await this.userService.addUser(newUser);
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Delete('/')
+    async deleteUser(@Request() req) {
+        return await this.userService.deleteUser(req.user.id);
     }
 }

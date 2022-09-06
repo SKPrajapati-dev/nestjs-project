@@ -12,6 +12,7 @@ import { TweetsService } from './tweets.service';
         UsersModule
     ],
     controllers: [TweetsController],
-    providers: [TweetsService]
+    providers: [TweetsService],
+    exports: [TweetsService]
 })
 export class TweetsModule {}

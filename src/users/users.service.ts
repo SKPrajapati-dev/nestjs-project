@@ -48,4 +48,8 @@ export class UsersService {
     async addUserWithoutPassword(newUser: any): Promise<User> {
         return await this.userRepo.save(newUser);
     }
+
+    async deleteUser(userId: number) {
+        return await this.userRepo.delete({ id: userId })
+    }
 }
